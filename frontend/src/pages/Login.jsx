@@ -21,15 +21,37 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import GoogleIcon from "@mui/icons-material/Google";
-
 import { Avatar, Button } from "@mui/material";
 import Footer from "./Footer";
+import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await api.post("/login", form);
+      localStorage.setItem("token", res.data.token);
+
+      navigate("/");
+    } catch (error) {
+     console.log(error);
+    }
+  };
   return (
     <>
       <Header />
@@ -227,6 +249,8 @@ function Login() {
 
                   <TextField
                     label="Email"
+                    name="email"
+                    onChange={onChange}
                     placeholder="Enter your Email"
                     fullWidth
                     margin="normal"
@@ -234,6 +258,8 @@ function Login() {
 
                   <TextField
                     label="Password"
+                    name="password"
+                    onChange={onChange}
                     placeholder="Enter your Password"
                     type={showPassword ? "text" : "password"}
                     fullWidth
@@ -272,6 +298,7 @@ function Login() {
                   </Grid>
 
                   <Button
+                  onClick={handleSubmit}
                     variant="contained"
                     className="orange"
                     fullWidth

@@ -23,12 +23,31 @@ import { useTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { Avatar, Button } from "@mui/material";
 import Footer from "./Footer";
+import api from "../services/api";
 
 function SignUp() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+  const [Massage, setMassage] = useState("");
+  const onChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/register", form);
+      setMassage(response.data.msg || "Registered successfully!");
+    } catch (error) {
+      setMassage(error.response?.data?.msg || "Registration failed");
+    }
+  };
   return (
     <>
       <Header />
@@ -207,6 +226,7 @@ function SignUp() {
                     borderRadius: 3,
                   }}
                 >
+                  {Massage && <Typography>{Massage}</Typography>}
                   <Grid
                     container
                     sx={{
@@ -225,13 +245,17 @@ function SignUp() {
                   </Grid>
                   <TextField
                     label="Full Name"
-                    placeholder="Enter your Name"
+                    name="fullName"
+                    onChange={onChange}
+                    placeholder="Enter your fillName"
                     fullWidth
                     margin="normal"
                   />
 
                   <TextField
                     label="Email"
+                    name="email"
+                    onChange={onChange}
                     placeholder="Enter your Email"
                     fullWidth
                     margin="normal"
@@ -240,6 +264,8 @@ function SignUp() {
                   <TextField
                     label="Password"
                     placeholder="Enter your Password"
+                    name="password"
+                    onChange={onChange}
                     type={showPassword ? "text" : "password"}
                     fullWidth
                     margin="normal"
@@ -272,6 +298,7 @@ function SignUp() {
                   </Grid>
 
                   <Button
+                    onClick={handleSubmit}
                     variant="contained"
                     className="orange"
                     fullWidth
