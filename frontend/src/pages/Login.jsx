@@ -49,7 +49,7 @@ function Login() {
 
       navigate("/");
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
   };
   return (
@@ -298,7 +298,7 @@ function Login() {
                   </Grid>
 
                   <Button
-                  onClick={handleSubmit}
+                    onClick={handleSubmit}
                     variant="contained"
                     className="orange"
                     fullWidth
