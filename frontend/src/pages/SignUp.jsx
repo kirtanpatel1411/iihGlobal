@@ -24,9 +24,11 @@ import { useMediaQuery } from "@mui/material";
 import { Avatar, Button } from "@mui/material";
 import Footer from "./Footer";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +46,9 @@ function SignUp() {
     try {
       const response = await api.post("/register", form);
       setMassage(response.data.msg || "Registered successfully!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       setMassage(error.response?.data?.msg || "Registration failed");
     }
