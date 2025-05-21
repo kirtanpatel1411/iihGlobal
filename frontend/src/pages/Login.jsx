@@ -46,7 +46,7 @@ function Login() {
     try {
       const res = await api.post("/login", form);
       localStorage.setItem("token", res.data.token);
-
+      alert("Login sucessfully!");
       navigate("/");
     } catch (error) {
       console.log(error);

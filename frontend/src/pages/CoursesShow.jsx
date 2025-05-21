@@ -5,9 +5,7 @@ import { Typography, Button, Divider, Box } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchCourses, selectCourse } from "../redux/CoursesSlice";
-import { useParams } from "react-router";
+import { useSelector } from "react-redux";
 import { useTheme } from "@emotion/react";
 import { useMediaQuery } from "@mui/material";
 
@@ -15,24 +13,7 @@ function CoursesShow() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
-  const Course = useSelector((state) => state.Courses.SelectedCourse);
-  const Allcourses = useSelector((state) => state.Courses.Courses.Courses);
-  const dispatch = useDispatch();
-  const { id } = useParams();
-
-  useEffect(() => {
-    if (!Allcourses) {
-      dispatch(fetchCourses());
-    }
-    if (Allcourses && !Course) {
-      const SelectedCourse = Allcourses.find(
-        (course) => course.id === parseInt(id)
-      );
-      if (SelectedCourse) {
-        dispatch(selectCourse(SelectedCourse));
-      }
-    }
-  }, [Allcourses, id, dispatch, Course]);
+  const Course = useSelector((state) => state.courses.SelectedCourse);
 
   return (
     <>

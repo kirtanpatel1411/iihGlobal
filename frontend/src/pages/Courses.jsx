@@ -2,28 +2,24 @@ import React from "react";
 import { useTheme } from "@emotion/react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Typography, Button, Divider } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router";
-import { fetchCourses } from "../redux/CoursesSlice";
+// import { fetchCourses } from "../redux/CoursesSlice";
 import Grid from "@mui/material/Grid";
 import { selectCourse } from "../redux/CoursesSlice";
 import Container from "@mui/material/Container";
+import courses from "../data/courses";
 
 function Courses() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useDispatch();
-  const { Courses, loading, error } = useSelector((state) => state.Courses);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(fetchCourses());
-  }, [dispatch]);
 
   const courseClick = (course) => {
     dispatch(selectCourse(course));
@@ -84,210 +80,205 @@ function Courses() {
             color={theme.palette.fontcolor.main}
             sx={{ width: "100%", height: 1 }}
           />
-          {loading
-            ? "Loading..."
-            : error
-            ? error
-            : Courses.map((course, index) => (
+
+          {courses.map((course, index) => (
+            <Grid
+              key={course.id}
+              container
+              spacing={3}
+              sx={{
+                backgroundColor: theme.palette.background.main,
+                width: "100%",
+                height: "auto",
+                borderRadius: 3,
+                p: isMobile ? 1 : 6,
+              }}
+            >
+              <Grid
+                container
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
                 <Grid
-                  key={course.id}
                   container
-                  spacing={3}
                   sx={{
-                    backgroundColor: theme.palette.background.main,
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: 3,
-                    p: isMobile ? 1 : 6,
+                    width: isMobile ? "100%" : "80%",
                   }}
                 >
+                  <Grid>
+                    <Typography variant={isMobile ? "h5" : "h4"}>
+                      {course.coursname}
+                    </Typography>
+
+                    <Typography
+                      variant={isMobile ? "body2" : "body1"}
+                      sx={{ lineHeight: 1.8 }}
+                    >
+                      {course.description}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container>
                   <Grid
-                    container
                     sx={{
                       display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <Grid
-                      container
+                    <Button
+                      className="orange"
+                      variant="contained"
+                      onClick={() => courseClick(course)}
                       sx={{
-                        width: isMobile ? "100%" : "80%",
+                        color: "#fff",
+                        backgroundColor: theme.palette.primary.main,
+                        border: "none",
                       }}
                     >
-                      <Grid>
-                        <Typography variant={isMobile ? "h5" : "h4"}>
-                          {course.coursname}
-                        </Typography>
+                      View Course
+                    </Button>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    gap: 2,
 
-                        <Typography
-                          variant={isMobile ? "body2" : "body1"}
-                          sx={{ lineHeight: 1.8 }}
-                        >
-                          {course.description}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Grid container>
-                      <Grid
+                    width: "100%",
+                  }}
+                >
+                  <Grid>
+                    <img
+                      src={course.img1}
+                      alt=""
+                      style={{
+                        width: isMobile ? "80px" : "420px",
+                        height: isMobile ? "80px" : "350px",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  </Grid>
+                  <Grid>
+                    <img
+                      src={course.img2}
+                      alt=""
+                      style={{
+                        width: isMobile ? "80px" : "420px",
+                        height: isMobile ? "80px" : "350px",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  </Grid>
+                  <Grid>
+                    <img
+                      src={course.img3}
+                      alt=""
+                      style={{
+                        width: isMobile ? "80px" : "420px",
+                        height: isMobile ? "80px" : "350px",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Grid container>
+                    <Grid>
+                      <Chip
                         sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          borderRadius: 2,
+                          p: 2,
                         }}
-                      >
-                        <Button
-                          className="orange"
-                          variant="contained"
-                          onClick={() => courseClick(course)}
-                          sx={{
-                            color: "#fff",
-                            backgroundColor: theme.palette.primary.main,
-                            border: "none",
-                          }}
-                        >
-                          View Course
-                        </Button>
-                      </Grid>
+                        label={course.week}
+                        variant="outlined"
+                      />
                     </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        gap: 2,
-
-                        width: "100%",
-                      }}
-                    >
-                      <Grid>
-                        <img
-                          src={course.img1}
-                          alt=""
-                          style={{
-                            width: isMobile ? "80px" : "420px",
-                            height: isMobile ? "80px" : "350px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid>
-                        <img
-                          src={course.img2}
-                          alt=""
-                          style={{
-                            width: isMobile ? "80px" : "420px",
-                            height: isMobile ? "80px" : "350px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid>
-                        <img
-                          src={course.img3}
-                          alt=""
-                          style={{
-                            width: isMobile ? "80px" : "420px",
-                            height: isMobile ? "80px" : "350px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </Grid>
+                    <Grid>
+                      <Chip
+                        sx={{
+                          borderRadius: 2,
+                          p: 2,
+                        }}
+                        label={course.level}
+                        variant="outlined"
+                      />
                     </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                      }}
-                    >
-                      <Grid container>
-                        <Grid>
-                          <Chip
-                            sx={{
-                              borderRadius: 2,
-                              p: 2,
-                            }}
-                            label={course.week}
-                            variant="outlined"
-                          />
-                        </Grid>
-                        <Grid>
-                          <Chip
-                            sx={{
-                              borderRadius: 2,
-                              p: 2,
-                            }}
-                            label={course.level}
-                            variant="outlined"
-                          />
-                        </Grid>
-                      </Grid>
-                      <Grid container>
-                        <Grid>
-                          <Typography variant="h5">{course.name}</Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        width: "100%",
-                      }}
-                    >
-                      <Grid>
-                        <Typography
-                          variant="h6"
-                          color={theme.palette.fontcolor.main}
-                        >
-                          Curriculum
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        display: "flex",
-                        flexDirection: isMobile ? "column" : "row",
-                        justifyContent: "space-between",
-                        width: "100%",
-                      }}
-                    >
-                      {course.number.map((topic) => (
-                        <React.Fragment key={topic.id}>
-                          <Grid
-                            container
-                            sx={{
-                              width: isMobile ? "100%" : "15%",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                              p: 2,
-                            }}
-                          >
-                            <Grid>
-                              <Typography variant="h3">{topic.id}</Typography>
-                            </Grid>
-                            <Grid>
-                              <Typography variant="body1">
-                                {topic.text}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-
-                          <Divider
-                            orientation={isMobile ? "horizontal" : "vertical"}
-                            flexItem
-                          />
-                        </React.Fragment>
-                      ))}
+                  </Grid>
+                  <Grid container>
+                    <Grid>
+                      <Typography variant="h5">{course.name}</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
-              ))}
+                <Grid
+                  container
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <Grid>
+                    <Typography
+                      variant="h6"
+                      color={theme.palette.fontcolor.main}
+                    >
+                      Curriculum
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  sx={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  {course.number.map((topic) => (
+                    <React.Fragment key={topic.id}>
+                      <Grid
+                        container
+                        sx={{
+                          width: isMobile ? "100%" : "15%",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "column",
+                          p: 2,
+                        }}
+                      >
+                        <Grid>
+                          <Typography variant="h3">{topic.id}</Typography>
+                        </Grid>
+                        <Grid>
+                          <Typography variant="body1">{topic.text}</Typography>
+                        </Grid>
+                      </Grid>
+
+                      <Divider
+                        orientation={isMobile ? "horizontal" : "vertical"}
+                        flexItem
+                      />
+                    </React.Fragment>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+          ))}
         </Grid>
       </Container>
       <Footer />

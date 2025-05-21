@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Box, Typography, Button, Paper } from "@mui/material";
@@ -22,10 +21,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import { fetchCourses } from "../redux/CoursesSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTheme } from "@emotion/react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import courses from "../data/courses";
 
 function Home() {
   const theme = useTheme();
@@ -33,10 +32,7 @@ function Home() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const { Courses, loading, error } = useSelector((state) => state.Courses);
-  useEffect(() => {
-    dispatch(fetchCourses());
-  }, [dispatch]);
+  
   const brands = [
     "Zapier",
     "Spotify",
@@ -415,7 +411,7 @@ function Home() {
                 justifyContent: "center",
               }}
             >
-              {Courses.map((item) => {
+              {courses.map((item) => {
                 return (
                   <Grid
                     container
